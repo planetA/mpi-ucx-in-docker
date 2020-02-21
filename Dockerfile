@@ -13,7 +13,9 @@ RUN apt-get update && \
   useradd -m user && \
   cd / && git clone --single-branch --branch mplaneta/rxe-workaround https://github.com/planetA/rdma-core.git && \
     cd rdma-core && mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr .. && make -j $(nproc) && make install && \
-  cd / && git clone --branch v1.6.1 --depth 1 https://github.com/openucx/ucx.git && cd ucx && ./autogen.sh && ./configure --with-rc && make -j $(nproc) && make install && \
+  cd / && git clone --branch v1.6.1 --depth 1 https://github.com/openucx/ucx.git && cd ucx && ./autogen.sh && \
+    ./configure --with-rc --with-ud=no --with-dc=no --with-mlx5-dv=no --with-dm=no --with-ib-hw-tm=no && \
+    make -j $(nproc) && make install && \
   cd /openmpi-4.0.2 && \
   ./configure --with-ucx --prefix=/usr --without-verbs --enable-mca-no-build=btl-uct \
     --disable-openib-rdmacm --disable-openib-udcm --enable-mpi-fortran && \
